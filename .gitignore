@@ -1,0 +1,12 @@
+
+.idea/.name
+
+*.xml
+
+*.pyc
+
+*.iml
+
+static/image/code.jpg
+
+secret_config.py

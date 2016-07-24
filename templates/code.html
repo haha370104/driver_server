@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>验证码</title>
+</head>
+<body>
+<img src='/static/image/code.jpg'>
+</body>
+<script src="/static/js/jquery-1.11.1.min.js"></script>
+<script>
+    $(document).ready(
+            function () {
+                wait_login();
+            }
+    );
+
+    function wait_login() {
+        $.get('/pan/wait_login/', function (data, status) {
+            console.log(data);
+            var result = JSON.parse(data);
+            if (result['status']) {
+                window.close();
+            } else {
+                location.reload();
+            }
+        })
+    }
+</script>
+</html>
