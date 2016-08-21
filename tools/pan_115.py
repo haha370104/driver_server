@@ -25,6 +25,7 @@ class pan_115:
             'Connection': 'keep-alive',
             'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36'
         }
+        self.session.headers.update(self.headers)
 
     def __get_info(self):
         params = {'ct': 'login',
@@ -49,7 +50,7 @@ class pan_115:
     def __get_request(self, url, params, check_flag=True, json_flag=True):  # check_flag用来判断是否需要做登录验证,下同
         if check_flag:
             pass  # 做一次登录验证
-        response = self.session.get(url, params=params, headers=self.headers)
+        response = self.session.get(url, params=params)
         if not json_flag:
             return response
         response_json = json.loads(response.text)
@@ -83,7 +84,7 @@ class pan_115:
         f.write(r.content)
         f.close()
 
-    def wait_login(self, times=3):
+    def wait_login(self, times=5):
         i = 0
         while i < times:
             i += 1
@@ -94,11 +95,12 @@ class pan_115:
                 's': self.session_id,
                 '_t': str(int(time.time() * 1000)),
             }
-            r = self.__get_request(url, params, json_flag=False)
+            r = self.__get_request(url, params, json_flag=False, check_flag=False)
             try:
                 status = json.loads(r.text)[0]['p'][0]['status']
                 if status == 1001:
                     print(u"请点击登录")
+                    continue
                 elif status == 1002:
                     print(u"登录成功")
                     return True
