@@ -1,6 +1,7 @@
 from flask import Blueprint, redirect, url_for, render_template, request
 from global_var import pan
 import json
+from tools.thread import thread
 import threading
 
 pan_bp = Blueprint('pan', __name__)
@@ -24,7 +25,8 @@ def get_code():
 def wait_login():
     if pan.wait_login():
         pan.login()
-        threading.Thread(target=pan.keep_login)
+        pan_keep_login_thread = thread(pan.keep_login, ())
+        pan_keep_login_thread.start()
         return redirect(url_for('pan.check_login'))
     else:
         return json.dumps({'msg': '登录超时', 'status': False})

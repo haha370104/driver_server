@@ -20,7 +20,7 @@
             console.log(data);
             var result = JSON.parse(data);
             if (result['status']) {
-                window.close();
+                alert('登陆成功,请关闭此窗口');
             } else {
                 location.reload();
             }
