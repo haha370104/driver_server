@@ -146,15 +146,18 @@ class pan_115:
 
     def keep_login(self):
         while True:
-            url = 'http://im37.115.com/chat/r'
-            params = {
-                'VER': '2',
-                'c': 'b0',
-                's': self.session_id,
-                '_t': str(int(time.time() * 1000)),
-            }
-            self.__get_request(url, params, json_flag=False)
-            time.sleep(60)
+            if self.check_login():
+                url = 'http://im37.115.com/chat/r'
+                params = {
+                    'VER': '2',
+                    'c': 'b0',
+                    's': self.session_id,
+                    '_t': str(int(time.time() * 1000)),
+                }
+                self.__get_request(url, params, json_flag=False)
+                time.sleep(60)
+            else:
+                return
 
     def add_task(self, task_url):
         url = 'http://115.com/web/lixian/?ct=lixian&ac=add_task_url'
